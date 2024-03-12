@@ -1,8 +1,8 @@
 "use client";
 import Balance from "@/components/balance/page";
 import SendTransaction from "@/components/send-transaction/page";
+import SignMessage from "@/components/sign-message/page";
 import SwitchChain from "@/components/switch-chain/page";
-import WriteContract from "@/components/write-contract/page";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 
 export default function Home() {
@@ -23,26 +23,28 @@ export default function Home() {
         </button>
         <SendTransaction />
         <Balance />
-        <WriteContract />
         <SwitchChain />
+        <SignMessage />
       </div>
     );
   } else {
     return (
-      <div className="flex min-h-screen flex-row space-x-5 items-center justify-center p-24 main">
-        {connectors.map((connector) => {
-          return (
-            <div key={connector.id}>
-              <button
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                type="button"
-                onClick={() => connect({ connector })}
-              >
-                {connector.name}
-              </button>
-            </div>
-          );
-        })}
+      <div className="flex flex-col space-y-4">
+        <div className="flex min-h-screen flex-row space-x-5 items-center justify-center p-24 main">
+          {connectors.map((connector) => {
+            return (
+              <div key={connector.id}>
+                <button
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                  type="button"
+                  onClick={() => connect({ connector })}
+                >
+                  {connector.name}
+                </button>
+              </div>
+            );
+          })}
+        </div>
         {error && <div>{error.message}</div>}
       </div>
     );
