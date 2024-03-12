@@ -8,7 +8,7 @@ import {
 import { Hex, parseEther } from "viem";
 import { clsx } from "clsx";
 
-export function SendTransaction() {
+export default function SendTransaction() {
   const {
     data: hash,
     error,
@@ -31,7 +31,7 @@ export function SendTransaction() {
 
   return (
     <div>
-      <h2>Send Transaction</h2>
+      <h2 className="font-semibold">Send Transaction</h2>
       <form
         className="flex flex-col space-y-4 text-left min-w-64"
         onSubmit={submit}

@@ -1,6 +1,6 @@
 "use client";
 import Balance from "@/components/balance/page";
-import { SendTransaction } from "@/components/send-transaction/page";
+import SendTransaction from "@/components/send-transaction/page";
 import SwitchChain from "@/components/switch-chain/page";
 import WriteContract from "@/components/write-contract/page";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
