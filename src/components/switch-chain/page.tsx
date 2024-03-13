@@ -9,8 +9,7 @@ const CSS_BTNS: any = {
 export default function SwitchChain() {
   const chainId = useChainId();
   const { chains, switchChain, error } = useSwitchChain();
-  console.log("==========> chains:", chains);
-  console.log("==========> chainId:", chainId);
+
   return (
     <div className="flex flex-col space-y-5">
       <h2 className="font-semibold">Switch Chain</h2>
