@@ -3,6 +3,8 @@ import { createConfig, http, createStorage, cookieStorage } from "wagmi";
 import { bscTestnet, goerli, polygonZkEvmTestnet } from "viem/chains";
 import { metaMask, walletConnect } from "wagmi/connectors";
 import Web3AuthConnectorInstance from "@/utils/web3-auth-connector-instance";
+import { CHAINS } from "./constant";
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 
 export const projectId = "b7376566476128e77408a3e580c5f671";
 
@@ -15,13 +17,13 @@ const metadata = {
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
+const web3AuthInstance = Web3AuthConnectorInstance(CHAINS);
+
 // Create modal
 export const config = createConfig({
-  chains: [polygonZkEvmTestnet, goerli, bscTestnet],
+  chains: [polygonZkEvmTestnet],
   transports: {
     [polygonZkEvmTestnet.id]: http(),
-    [goerli.id]: http(),
-    [bscTestnet.id]: http(),
   },
   ssr: true,
   storage: createStorage({
@@ -31,6 +33,6 @@ export const config = createConfig({
   connectors: [
     metaMask(),
     walletConnect({ projectId, metadata, showQrModal: true }),
-    Web3AuthConnectorInstance([goerli, polygonZkEvmTestnet, bscTestnet]),
+    Web3AuthConnector(web3AuthInstance),
   ],
 });

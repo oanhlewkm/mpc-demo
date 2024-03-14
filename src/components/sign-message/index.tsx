@@ -37,6 +37,7 @@ export default function SignMessage() {
             disabled={isLoading}
             type="button"
             onClick={() => {
+              if (!message || !message.trim()) return;
               setIsLoading(true);
               signMessage({ message });
             }}

@@ -9,6 +9,7 @@ import {
 } from "@web3auth/base";
 import { Chain } from "wagmi/chains";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
@@ -39,18 +40,59 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       logoLight: "https://web3auth.io/images/web3authlog.png",
       logoDark: "https://web3auth.io/images/web3authlogodark.png",
       uxMode: "redirect",
-      mode: "light",
       loginGridCol: 2,
       primaryButton: "externalLogin",
+      mode: "auto", // whether to enable dark mode. defaultValue: auto
+      useLogoLoader: true,
     },
     web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET,
     enableLogging: true,
   });
 
+  const openloginAdapter = new OpenloginAdapter({
+    loginSettings: {
+      mfaLevel: "optional",
+    },
+    adapterSettings: {
+      whiteLabel: {
+        appName: name,
+        logoLight: "https://web3auth.io/images/web3authlog.png",
+        logoDark: "https://web3auth.io/images/web3authlogodark.png",
+        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        mode: "dark", // whether to enable dark mode. defaultValue: false
+      },
+      mfaSettings: {
+        deviceShareFactor: {
+          enable: false,
+          priority: 4,
+          mandatory: false,
+        },
+        backUpShareFactor: {
+          enable: true,
+          priority: 2,
+          mandatory: true,
+        },
+        socialBackupFactor: {
+          enable: true,
+          priority: 3,
+          mandatory: true,
+        },
+        passwordFactor: {
+          enable: true,
+          priority: 1,
+          mandatory: true,
+        },
+      },
+    },
+  });
+  web3AuthInstance.configureAdapter(openloginAdapter);
+
   const walletServicesPlugin = new WalletServicesPlugin({
     walletInitOptions: {
       whiteLabel: {
         showWidgetButton: false,
+        logoLight: "https://web3auth.io/images/web3authlog.png",
+        logoDark: "https://web3auth.io/images/web3authlogodark.png",
       },
     },
   });
@@ -80,8 +122,8 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     },
   };
 
-  return Web3AuthConnector({
+  return {
     web3AuthInstance,
     modalConfig,
-  });
+  };
 }

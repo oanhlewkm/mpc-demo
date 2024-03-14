@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
 import {
   useWaitForTransactionReceipt,
   useSendTransaction,
@@ -7,6 +7,7 @@ import {
 } from "wagmi";
 import { Hex, parseEther } from "viem";
 import { clsx } from "clsx";
+import { config } from "@/utils/config";
 
 export default function SendTransaction() {
   const {
@@ -14,20 +15,28 @@ export default function SendTransaction() {
     error,
     isPending,
     sendTransaction,
-  } = useSendTransaction();
+  } = useSendTransaction({ config });
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const to = formData.get("address") as Hex;
     const value = formData.get("value") as string;
-    sendTransaction({ to, value: parseEther(value) });
+    console.log(parseEther(value));
+    sendTransaction({
+      to,
+      value: parseEther(value),
+    });
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
     });
+
+  useEffect(() => {
+    if (error) console.log("=========> error", error);
+  }, [error]);
 
   return (
     <div>
